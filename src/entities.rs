@@ -89,7 +89,7 @@ pub trait SoftDeletable
 where
     Self: Serialize,
 {
-    fn is_deleted(&self) -> bool;
+    fn is_deleted(&self) -> &bool;
     fn set_deleted(&mut self, deleted: bool);
 }
 

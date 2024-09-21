@@ -1,6 +1,6 @@
 use diesel::prelude::*;
 use dotenvy::dotenv;
-use std::env;
+use std::{env, error::Error};
 
 /// Entidad encargada de generar operaciones básicas
 /// de base de datos desde diesel
@@ -10,11 +10,10 @@ impl DieselConnector {
     /// a la base de datos siempre que se haya definido
     /// un `DATABASE_URL` en un archivo .env en la raiz
     /// del proyecto
-    fn establish_connection() -> SqliteConnection {
+    pub fn establish_connection() -> Result<SqliteConnection, Box<dyn Error>> {
         dotenv().ok();
 
         let database_url = env::var("DATABASE_URL").expect("DATABASE_URL must be set");
-        SqliteConnection::establish(&database_url)
-            .unwrap_or_else(|_| panic!("Error connecting to {}", database_url))
+        Ok(SqliteConnection::establish(&database_url)?)
     }
 }
